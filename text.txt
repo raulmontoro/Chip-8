@@ -1,0 +1,68 @@
+CHIP-8
+    RCA Labs (1972) COSMAC VIP 8-bit processor (1802) 1.76 Mhz
+    low cost microcomputers
+    video games without asssembly
+    
+    37 instructions
+    including 3 new instructions to support RS485 Communications and Sound
+    Generator pith changes.
+
+    16 one-byte registers (V0 - VF)
+
+    12 bit instruction pointer memory locations for load/store and display
+
+    interpreted programming language developed by Joseph Weisbecker
+
+    initially for COSMAC VIP and Telmac 1800 8 bit microcomputers in the mid-1970
+
+    for gamming
+
+    Chip-8 virtual machine
+
+    derived interpreters for graphic calculators in 1980
+
+
+COSMAC VIP
+
+TELMAC 1800
+
+MEMORY
+1 Byte Memory (1byte, 8 bits, thus Chip-8)
+
+4K 4096 (0x1000) memory location systems
+
+chip-8 interpreter occupies 512 bytes of memory space in these machines
+
+for these reasons programs start at memory location 512(0x200) and do not
+    access any of the memory below location 512 (0x200)
+
+the upper most byte 256 byte (0xF00-0xFFF) are reserved for display refresh
+and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
+internal use and variables
+
+Modern implementations
+    interpreter running natively outside the 4K memory space
+    no need to avoid the low 512 bytes of memory and it is common to store font date
+    in there,
+
+REGISTERS
+    chip-8 has 16 8 bit data registers
+        V0 to VF
+
+GITHUB
+    Tobias V. Langhoff      awesome chip-8
+
+QEMU
+
+
+
+
+CHIP-8 INSTRUCTION SET
+
+store Code      Mnemonic    Description
+0000            NOP         No Operation
+00E0            ERASE       Clear Screen
+00EE            RETURN      Return sombe subroutine
+1MMM            GOTO MMM    jump to location MMM         
+2MMM            DO MMM      Call Subroutine
+
