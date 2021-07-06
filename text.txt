@@ -1,30 +1,96 @@
 CHIP-8
-    RCA Labs (1972) COSMAC VIP 8-bit processor (1802) 1.76 Mhz
-    low cost microcomputers
-    video games without asssembly
+    RCA Labs (1972)
+        COSMAC VIP 8-bit processor (1802) 1.76 Mhz
+            low cost microcomputers
+            video games without asssembly
     
+
+    Sound
+        Sound Generator pith changes
+        one fixed tone
+
+    Storage
+        cassette recorder
+    
+MODERN CHIP-8 BOARD
+    Flash based Interpreter resident within boards Operating System
+    32 bit microcontroller 48 MHz
+    64x32 pixel monochrome Composite Video Display
+    Sound Generator - 30 Tones
+    RS485 Serial Port
+    Hexadecimal Keypad Interface
+    EEPROM Option board - CHIP-8 supported Load and Save Functions.
+    Single 5 VDC Supply, using a 2.1x5.5 DC plug
+    Small 120x90mm PCA footprint
+
     37 instructions
-    including 3 new instructions to support RS485 Communications and Sound
-    Generator pith changes.
+    including 3 new instructions to support RS485 Communications
 
+
+REGISTERS
     16 one-byte registers (V0 - VF)
+        direccionamiento variety of arithmetic/logic and conditional branch instructions
 
-    12 bit instruction pointer memory locations for load/store and display
+INSTRUCTION POINTER
+    12 bit instruction pointer memory locations for load/store and display instructions
 
+    This allows multiple sets of variables or array processing.
+
+    Subroutine nesting is implemented to 32 levels
+
+
+MODES OF OPERATION
+    Command Mode
+    Edit Mode
+    Program Mode
+
+    power first applied, start off in command mode
+    random data display
+    white status bar bottom
+        hexadecimal number 4457, normal default value prior to the address
+            being changed
+            show current memory address being pointed to by CHIP-8 program
+            value range from 0000 to FFFF Hex
+
+    when in edit mode a two digit hexadecimal number is displayed to the right
+    of the memoery address. this value represent the data being pointed to by the
+    program counter
+
+
+
+    COMMAND MODE
+        command mode to use the function keys
+        F2 key resets monitor. board red LED will light.
+        program data i not lost
+
+
+    EDIT MODE
+        F2 key allows the monitor to break out and go back to command mode
+        Pressing F1 key followed by the 0 key will place the monitor into edit mode.
+        It is this mode that allows a program to be stored in memory.
+        Pressing the F1 key when in edit mode will increment the address of the program.
+
+        ...
+            
+    PROGRAM MODE
+
+    
+
+
+
+
+
+
+CHIP-8
     interpreted programming language developed by Joseph Weisbecker
+    virtual machine
 
-    initially for COSMAC VIP and Telmac 1800 8 bit microcomputers in the mid-1970
-
-    for gamming
-
-    Chip-8 virtual machine
+    initially for 
+        COSMAC VIP, and 
+        TELMAC 1800, 8 bit microcomputers in the mid-1970, for gamming
 
     derived interpreters for graphic calculators in 1980
 
-
-COSMAC VIP
-
-TELMAC 1800
 
 MEMORY
 1 Byte Memory (1byte, 8 bits, thus Chip-8)
@@ -62,7 +128,35 @@ CHIP-8 INSTRUCTION SET
 store Code      Mnemonic    Description
 0000            NOP         No Operation
 00E0            ERASE       Clear Screen
-00EE            RETURN      Return sombe subroutine
+00EE            RETURN      Return from subroutine
 1MMM            GOTO MMM    jump to location MMM         
 2MMM            DO MMM      Call Subroutine
+3XKK            SKF VX=KK   Skip next Instruction if VX=KK
+4XKK            SKF VX!=KK  Skip next Instruction if VX!=KK.
+5XY0            SKF VX=VY   Skip next Instruction if VX=VY.
+6XKK            VX=KK       Assign Hex Value KK to Register VX.
+7XKK            VX=VX+KK    Add KK to VX.
+8XY0            VX=VY       Copy VY to VX.
+8XY1            VX=VX|VY    Logical OR VX with VY.
+8XY2            VX=VX.VY    Logical AND VX with VY.
+...
 
+CHIP-8 MEMORY MAP
+
+Address Range (Hex)         Function
+0000 - 003F                 Stack
+0040 - 004C                 Scratchpad
+004D - 00FF                 Unused
+0100 - 01FF                 Display
+0200 - 0FFF                 Program Area
+
+Scratchpad Area:
+0040H - Firmware Revision (2 byte). H for hexadecimal.
+0048H - EEPROM Unique ID (8 bytes).
+
+
+EEPROM
+    electrically erasable programmable read-only memory and is a type of
+    non-volatile memory used in computers, integrated in microcontrollers
+    for smart cards and rmote keyless systems to store relative small amount of
+    data.
