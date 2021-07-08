@@ -1,17 +1,103 @@
-CHIP-8
-    RCA Labs (1972)
-        COSMAC VIP 8-bit processor (1802) 1.76 Mhz
-            low cost microcomputers
-            video games without asssembly
+CHIP-8 INTERPRETER
+    
+    pseudo languange, pseudo instructions or language of macros
+    interpreted programming language developed by Joseph Weisbecker
+    virtual machine (VM), virtualization/emulation of a computer system,
+    provider of the functionality of a physical computer
+    
+    chip-8 interpreter occupies 512 bytes of memory space in these machines
+    
+    for these reasons programs start at memory location 512(0x200) and do not
+        access any of the memory below location 512 (0x200)
+    
+    the upper most byte 256 byte (0xF00-0xFFF) are reserved for display refresh, buffer to avoid flickering
+    and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
+    internal use and variables
+
+    Standard Resolution 64x32, monochrome
+
+CHIP-8 APPLICATIONS
+    ported videogames
+    graphing calculators
+    64x32 sprites
+
+CHIP-8 Extentions and Variations
+    CHIP-10
+    Hi Res CHIP-8
+    CHIP-8C
+    CHIP-8X
+
+Motorola 6800
+DREAM 6800
+ETI-660
+
+    CHIP-48
+        HP-48 graphic calculators
+
+    SCHIP, Super-Chip
+        several additiona opcodes
+
+
+pure hardware implementations (written in Verilog) for FPGA boards
+
+VIRTUAL MACHINE DESCRIPTION
+Timers
+    two timers counting down from 60Hz to 0
+    Delay Timers
+    Sound Timers
+
+Input
+
+Graphics and Sound
+
+Opcode Table
+
+RCA Labs (1972), initially for
+
+    COSMAC VIP 8-bit processor (1802) 1.76 Mhz
+        low cost microcomputers
+        video games without asssembly
+
+ 
+    TELMAC 1800, 8 bit microcomputers in the mid-1970, for gamming
+
+    derived interpreters for graphic calculators in 1980
     
 
+
+    REGISTERS
+        16 one-byte registers (V0 - VF)
+            direccionamiento variety of arithmetic/logic and conditional branch instructions
+    
+        12 bit memory pointer
+           load/store instructions and data
+           This allows multiple sets of variables or array processing.
+           Subroutine nesting is implemented to 32 levels
+            
+            12 bit Address directioning of
+            2^{12} = 1024    4096 bits ~ 4kB
+    
+    
+
+
+    MEMORY
+        1 Byte Memory (1byte = 8 bits, thus Chip-8)
+        
+        4K 4096 (0x1000) memory location systems
+        
     Sound
         Sound Generator pith changes
         one fixed tone
 
     Storage
         cassette recorder
+
     
+
+
+
+
+
 MODERN CHIP-8 BOARD
     Flash based Interpreter resident within boards Operating System
     32 bit microcontroller 48 MHz
@@ -25,54 +111,47 @@ MODERN CHIP-8 BOARD
 
     37 instructions
     including 3 new instructions to support RS485 Communications
-
-
-REGISTERS
-    16 one-byte registers (V0 - VF)
-        direccionamiento variety of arithmetic/logic and conditional branch instructions
-
-INSTRUCTION POINTER
-    12 bit instruction pointer memory locations for load/store and display instructions
-
-    This allows multiple sets of variables or array processing.
-
-    Subroutine nesting is implemented to 32 levels
-
-
-MODES OF OPERATION
-    Command Mode
-    Edit Mode
-    Program Mode
-
-    power first applied, start off in command mode
-    random data display
-    white status bar bottom
-        hexadecimal number 4457, normal default value prior to the address
-            being changed
-            show current memory address being pointed to by CHIP-8 program
-            value range from 0000 to FFFF Hex
-
-    when in edit mode a two digit hexadecimal number is displayed to the right
-    of the memoery address. this value represent the data being pointed to by the
-    program counter
+        
+    Modern implementations
+        interpreter running natively outside the 4K memory space
+        no need to avoid the low 512 bytes of memory and it is common to store font date
+        in there,
+    
 
 
 
-    COMMAND MODE
-        command mode to use the function keys
-        F2 key resets monitor. board red LED will light.
-        program data i not lost
 
-
-    EDIT MODE
-        F2 key allows the monitor to break out and go back to command mode
-        Pressing F1 key followed by the 0 key will place the monitor into edit mode.
-        It is this mode that allows a program to be stored in memory.
-        Pressing the F1 key when in edit mode will increment the address of the program.
-
-        ...
-            
-    PROGRAM MODE
+    MODES OF OPERATION
+        COMMAND MODE
+        
+            power first applied, start off in command mode
+            random data display
+            white status bar bottom
+                hexadecimal number 4457, normal default value prior to the address being changed
+                    show current memory address being pointed to by CHIP-8 program
+                    value range from 0000 to FFFF Hex
+    
+                command mode to use the function keys
+                F2 key resets monitor. board red LED will light.
+                program data i not lost
+    
+    
+        EDIT MODE
+        
+            when in edit mode a two digit hexadecimal number is displayed to the right
+            of the memoery address. this value represent the data being pointed to by the
+            program counter
+    
+    
+    
+            F2 key allows the monitor to break out and go back to command mode
+            Pressing F1 key followed by the 0 key will place the monitor into edit mode.
+            It is this mode that allows a program to be stored in memory.
+            Pressing the F1 key when in edit mode will increment the address of the program.
+    
+            ...
+                
+        PROGRAM MODE
 
     
 
@@ -80,40 +159,6 @@ MODES OF OPERATION
 
 
 
-
-CHIP-8
-    interpreted programming language developed by Joseph Weisbecker
-    virtual machine
-
-    initially for 
-        COSMAC VIP, and 
-        TELMAC 1800, 8 bit microcomputers in the mid-1970, for gamming
-
-    derived interpreters for graphic calculators in 1980
-
-
-MEMORY
-1 Byte Memory (1byte, 8 bits, thus Chip-8)
-
-4K 4096 (0x1000) memory location systems
-
-chip-8 interpreter occupies 512 bytes of memory space in these machines
-
-for these reasons programs start at memory location 512(0x200) and do not
-    access any of the memory below location 512 (0x200)
-
-the upper most byte 256 byte (0xF00-0xFFF) are reserved for display refresh
-and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
-internal use and variables
-
-Modern implementations
-    interpreter running natively outside the 4K memory space
-    no need to avoid the low 512 bytes of memory and it is common to store font date
-    in there,
-
-REGISTERS
-    chip-8 has 16 8 bit data registers
-        V0 to VF
 
 GITHUB
     Tobias V. Langhoff      awesome chip-8
@@ -160,3 +205,27 @@ EEPROM
     non-volatile memory used in computers, integrated in microcontrollers
     for smart cards and rmote keyless systems to store relative small amount of
     data.
+
+
+
+
+
+
+RCA 1802
+    COSMAC 8-bit microprocessor family
+    first CMOS microprocessor
+
+    two-chip
+        CDP1801R
+        CDP1801U
+
+    sigle-chip
+        CDP1802
+
+scientific instruments
+comertial products
+space science programs
+Hubble Space Telescope
+
+emulated and simulated in hardware and software by hobbyists
+VHDL for an FPGA
