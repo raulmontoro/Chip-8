@@ -1,14 +1,14 @@
 CHIP-8 INTERPRETER
+    pseudo instructions
+    interpreted programming language
+    virtual machine (VM), provider of the functionality of a physical computer
+    developed by Joseph Weisbecker
     
-    pseudo languange, pseudo instructions or language of macros
-    interpreted programming language developed by Joseph Weisbecker
-    virtual machine (VM), virtualization/emulation of a computer system,
-    provider of the functionality of a physical computer
     
-    chip-8 interpreter occupies 512 bytes of memory space in these machines
+    occupies 512 bytes of memory space in these machines
     
-    for these reasons programs start at memory location 512(0x200) and do not
-        access any of the memory below location 512 (0x200)
+    programs start at memory location 512(0x200) and
+    do not access any of the memory below location 512 (0x200)
     
     the upper most byte 256 byte (0xF00-0xFFF) are reserved for display refresh, buffer to avoid flickering
     and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
