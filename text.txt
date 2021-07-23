@@ -1,3 +1,60 @@
+<<<<<<< HEAD
+=======
+CHIP-8 INTERPRETER
+    pseudo instructions
+    interpreted programming language
+    virtual machine (VM), provider of the functionality of a physical computer
+    developed by Joseph Weisbecker
+    
+    
+    occupies 512 bytes of memory space in these machines
+    
+    programs start at memory location 512(0x200) and
+    do not access any of the memory below location 512 (0x200)
+    
+    the upper most byte 256 byte (0xF00-0xFFF) are reserved for display refresh, buffer to avoid flickering
+    and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
+    internal use and variables
+
+    Standard Resolution 64x32, monochrome
+
+CHIP-8 APPLICATIONS
+    ported videogames
+    graphing calculators
+    64x32 sprites
+
+CHIP-8 Extentions and Variations
+    CHIP-10
+    Hi Res CHIP-8
+    CHIP-8C
+    CHIP-8X
+
+Motorola 6800
+DREAM 6800
+ETI-660
+
+    CHIP-48
+        HP-48 graphic calculators
+
+    SCHIP, Super-Chip
+        several additiona opcodes
+
+
+pure hardware implementations (written in Verilog) for FPGA boards
+
+VIRTUAL MACHINE DESCRIPTION
+Timers
+    two timers counting down from 60Hz to 0
+    Delay Timers
+    Sound Timers
+
+Input
+
+Graphics and Sound
+
+Opcode Table
+
+>>>>>>> 9a2371c1a3f0fed09f19695636b62696b6cdfbf6
 RCA Labs (1972), initially for
 
     COSMAC VIP 8-bit processor (1802) 1.76 Mhz
