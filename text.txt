@@ -1,74 +1,41 @@
-<<<<<<< HEAD
-=======
-CHIP-8 INTERPRETER
-    pseudo instructions
-    interpreted programming language
-    virtual machine (VM), provider of the functionality of a physical computer
-    developed by Joseph Weisbecker
-    
-    
-    occupies 512 bytes of memory space in these machines
-    
-    programs start at memory location 512(0x200) and
-    do not access any of the memory below location 512 (0x200)
-    
-    the upper most byte 256 byte (0xF00-0xFFF) are reserved for display refresh, buffer to avoid flickering
-    and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
-    internal use and variables
+IPU     image processor unit, or
+IPS     image signal processor
 
-    Standard Resolution 64x32, monochrome
-
-CHIP-8 APPLICATIONS
-    ported videogames
-    graphing calculators
-    64x32 sprites
-
-CHIP-8 Extentions and Variations
-    CHIP-10
-    Hi Res CHIP-8
-    CHIP-8C
-    CHIP-8X
-
-Motorola 6800
-DREAM 6800
-ETI-660
-
-    CHIP-48
-        HP-48 graphic calculators
-
-    SCHIP, Super-Chip
-        several additiona opcodes
+is a type of media processor or specialized digital signal processor (DSP)
+used for imaging processing, in digital camaras and other devices -displays.
 
 
-pure hardware implementations (written in Verilog) for FPGA boards
+Ref: https://en.wikipedia.org/wiki/In-system_programming
+In-system programming (ISP)
+or also called in-circuit serial programming (ICSP) is the hability of some
+programmable logic devises, microcontrollers, and other embedded devices to be
+programmed while installed in a complete system, rather than requiring the chip
+to be programmed prior to installation in the system.
 
-VIRTUAL MACHINE DESCRIPTION
-Timers
-    two timers counting down from 60Hz to 0
-    Delay Timers
-    Sound Timers
 
-Input
 
-Graphics and Sound
-
-Opcode Table
-
->>>>>>> 9a2371c1a3f0fed09f19695636b62696b6cdfbf6
-RCA Labs (1972), initially for
-
-    COSMAC VIP 8-bit processor (1802) 1.76 Mhz
-        low cost microcomputers
-        video games without asssembly
+low cost microcomputers
+video games without asssembly
 
  
-    TELMAC 1800, 8 bit microcomputers in the mid-1970, for gamming
+RCA Labs (1972)
 
-    derived interpreters for graphic calculators in 1980
-    
-
+    COSMAC VIP
+        8-bit processor (1802) 
+        1.76 Mhz
+        
+    TELMAC 1800
+        8 bit microcomputers in the mid-1970
 
 CHIP-8 INTERPRETER
+    INTERPRETER 
+        pseudo instructions, low level language interpreted programming language
+        developed by Joseph Weisbecker
+        512 bytes of memory space
+        programs start at memory location 512(0x200)
+        programs do not access any of the memory below location 512 (0x200)
+        virtual machine
+     
     EXTENTIONS AND VARIATIONS
         CHIP-10
         Hi Res CHIP-8
@@ -76,17 +43,11 @@ CHIP-8 INTERPRETER
         CHIP-8X
         CHIP-48
             HP-48 graphic calculators
+            derived interpreters for graphic calculators in 1980
 
         SCHIP, Super-Chip
             several additiona opcodes
 
-    INTERPRETER 
-        pseudo instructions, low level language interpreted programming language
-        developed by Joseph Weisbecker
-        512 bytes of memory space
-        programs start at memory location 512(0x200)
-        programs do not access any of the memory below location 512 (0x200)
-     
     VIRTUAL MACHINE (VM)
         virtualization/emulation of a computer system,
         provider of the functionality of a physical computer
@@ -142,8 +103,7 @@ CHIP-8 INTERPRETER
     
     INPUT
     
-    GRAPHICS
-    DISPLAY
+    DISPLAY (GRAPHICS)
         Standard Resolution 64x32, monochrome
         64x32 sprites
 
@@ -185,13 +145,13 @@ X and Y     are two 4 bits constants
 
 
 Opcode      Mnemonic    Description
-0NNN                    Call 1802 machine code program at NNN (not implemented)
-00CN                    Scroll down N lines
-00FB                    Scroll 4 pixels right
-00FC                    Scroll 4 pixels left
-00FD                    Quit the emulator
-00FE                    Set CHIP-8 graphic mode
-00FF                    Set SCHIP graphic mode
+0NNN                    call 1802 machine code program at NNN (not implemented)
+00CN                    scroll down N lines
+00FB                    scroll 4 pixels right
+00FC                    scroll 4 pixels left
+00FD                    quit the emulator
+00FE                    set CHIP-8 graphic mode
+00FF                    set SCHIP graphic mode
 00E0                    erase the screen
 00EE                    return from a CHIP-8 subroutine
 
@@ -211,7 +171,25 @@ Opcode      Mnemonic    Description
 8XY6                    VX = VX SHR 1 (VX = VX/2), VF = carry
 8XY7                    VX = VY - VX, VF = not borrow
 8XYE                    VX = VX SHL 1(VX = VX*2), VF = carry
-....
+9XY0                    skip next instruction if VX != VY
+ANNN                    I = NNN
+BNNN                    jump to NNN + V0
+CXKK                    VX = Random number AND KK
+DXYN                    draws a sprite at (VX, VY) starting at M(I). VF = collision.
+                        if N = 0, draws the 16x16 sprite, else an 8 x N sprite.
+EX9E                    skip next instruction if key VX pressed
+EXA1                    skip next instruction if key VX not pressed
+FX07                    VX = Delay timer
+FX0A                    waits a keypress and stores it in VX
+FX15                    delay timer = VX
+FX18                    sound timer = VX
+FX1E                    I = I + VX
+FX29                    I points to the 4 x 5 font sprite of hex char in VX
+FX33                    store BCD representation of VX in M(I)...M(I+2)
+FX55                    save V0...VX in memory starting at M(I)
+FX65                    load V0..VX(X<8) in the HP48 flags
+FX75                    save V0...VX(X<8) in the HP48 flags
+FX85                    load V0...VX(X<8) from the HP48 flags
 
 
 
@@ -220,7 +198,7 @@ Opcode      Mnemonic    Description
 
 
 
-
+Ref.: Chip-8 Classic Manual. Revision 1.3 9th March 2019, www.chip-8.com
 Opcode Table
 store Code      Mnemonic    Description
 0000            NOP         No Operation
@@ -236,9 +214,37 @@ store Code      Mnemonic    Description
 8XY0            VX=VY       Copy VY to VX.
 8XY1            VX=VX|VY    Logical OR VX with VY.
 8XY2            VX=VX.VY    Logical AND VX with VY.
-...
+8XY3            VX=VX XOR VY    Logical XOR VX with VY.
+8XY4            VX=VX+VY        Add VY to VX. If result > FF, then VF = 1.
+8XY5            VX=VX-VY        Substract VY. If VX<VY, then VF = 0.
+9XY0            SKF VX≠VY       Skip next Instruction if VX ≠VY.
+AMMM            I=MMM           Set memory Index Pointer to MMM.
+BMMM            GOTO MMM+V0     Jump to location MMM + V0.
+CXKK            VX=RND.KK       Get random byte, then AND with KK.
+DXYN            SHOW N@VX,VY    Display N-byte pattern at (VX, VY).
+EX9E            SKF VX=KEY      Skip if key down =VX. No wait.
+EXA1            SKF VX≠KEY      Skip if key down ≠VX. No wait.
+F000            STOP            Jump to Monitor (CHIPOS).
+FX07            VX=TIME         Get current timer value.
+FX0A            VX=KEY          Input Hex key code. Wait for key down.
+FX15            TIME=VX         Initialize Timer. 01=20mS.
+FX17            PITCH=VX        Set the Pitch of the Tone Generator to VX.
+FX18            TONE=VX         Sound Tone for 20 timesVX milliseconds.
+FX1E            I=I+VX          Add VX to Memory Pointer.
+FX29            I=DSP,VX        Set Pointer to show VX(LS digit).
+FX33            MI=DEQ,VX       Store 3 digit decimal equivalent of VX
+FX55            MI=VO:VX        Store V0 through VX at I. I=I+X+1.
+FX65            V0:VX=MI        Load V0 through VX at I. I=I+X+1.
+FX70            RS485=VX        Send data in VX to RS485 Port.
+FX71            VX=RS485        Waits for received RS485 data. Place in VX.
+FX72            BAUD=VX         Set RS485 Baud rate.
 
 
+BAUD RATES
+
+PITCH VALUES
+
+MEMORY MAP
 
 
 
