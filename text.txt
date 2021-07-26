@@ -1,255 +1,3 @@
-IPU     image processor unit, or
-IPS     image signal processor
-
-is a type of media processor or specialized digital signal processor (DSP)
-used for imaging processing, in digital camaras and other devices -displays.
-
-
-Ref: https://en.wikipedia.org/wiki/In-system_programming
-In-system programming (ISP)
-or also called in-circuit serial programming (ICSP) is the hability of some
-programmable logic devises, microcontrollers, and other embedded devices to be
-programmed while installed in a complete system, rather than requiring the chip
-to be programmed prior to installation in the system.
-
-
-
-low cost microcomputers
-video games without asssembly
-
- 
-RCA Labs (1972)
-
-    COSMAC VIP
-        8-bit processor (1802) 
-        1.76 Mhz
-        
-    TELMAC 1800
-        8 bit microcomputers in the mid-1970
-
-CHIP-8 INTERPRETER
-    INTERPRETER 
-        pseudo instructions, low level language interpreted programming language
-        developed by Joseph Weisbecker
-        512 bytes of memory space
-        programs start at memory location 512(0x200)
-        programs do not access any of the memory below location 512 (0x200)
-        virtual machine
-     
-    EXTENTIONS AND VARIATIONS
-        CHIP-10
-        Hi Res CHIP-8
-        CHIP-8C
-        CHIP-8X
-        CHIP-48
-            HP-48 graphic calculators
-            derived interpreters for graphic calculators in 1980
-
-        SCHIP, Super-Chip
-            several additiona opcodes
-
-    VIRTUAL MACHINE (VM)
-        virtualization/emulation of a computer system,
-        provider of the functionality of a physical computer
-    
-    REGISTERS
-        16 one-byte registers (V0 - VF)
-            direccionamiento variety of arithmetic/logic and conditional branch instructions
-    
-        12 bit memory pointer
-           load/store instructions and data
-           This allows multiple sets of variables or array processing.
-           Subroutine nesting is implemented to 32 levels
-            
-            12 bit Address directioning of
-            2^{12} = 1024    4096 bits ~ 4kB
-    
-    
-
-
-    MEMORY
-        1 Byte Memory (1byte = 8 bits, thus Chip-8)
-        
-        4K 4096 (0x1000) memory location systems
-     
-        the upper most byte 256 byte (0xF00-0xFFF) are reserved for display refresh, buffer to avoid flickering
-        and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
-        internal use and variables
-
-        CHIP-8 MEMORY MAP
-        
-        Address Range (Hex)         Function
-        0000 - 003F                 Stack
-        0040 - 004C                 Scratchpad
-        004D - 00FF                 Unused
-        0100 - 01FF                 Display
-        0200 - 0FFF                 Program Area
-        
-        Scratchpad Area:
-        0040H - Firmware Revision (2 byte). H for hexadecimal.
-        0048H - EEPROM Unique ID (8 bytes).
-        
-        
-        EEPROM
-            electrically erasable programmable read-only memory and is a type of
-            non-volatile memory used in computers, integrated in microcontrollers
-            for smart cards and rmote keyless systems to store relative small amount of
-            data.
-    
-    TIMERS
-        two timers counting down from 60Hz to 0
-        Delay Timers
-        Sound Timers
-    
-    INPUT
-    
-    DISPLAY (GRAPHICS)
-        Standard Resolution 64x32, monochrome
-        64x32 sprites
-
-    
-    SOUND
-        Sound Generator pith changes
-        one fixed tone
-
-    STORAGE
-        cassette recorder
-
-
-
-
-
-        
-
-    
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-Ref.: CHIP8. A CHIP-8 / SCHIP emulator version 2.2.0 by David WINTER (HPMANIAC)
-CHIP-8 INSTRUCTION SET
-
-NNN         is an address
-KK          is an 8 bit constant
-X and Y     are two 4 bits constants
-
-
-Opcode      Mnemonic    Description
-0NNN                    call 1802 machine code program at NNN (not implemented)
-00CN                    scroll down N lines
-00FB                    scroll 4 pixels right
-00FC                    scroll 4 pixels left
-00FD                    quit the emulator
-00FE                    set CHIP-8 graphic mode
-00FF                    set SCHIP graphic mode
-00E0                    erase the screen
-00EE                    return from a CHIP-8 subroutine
-
-1NNN                    jump to NNN
-2NNN                    call CHIP-8 sub-routine at NNN (16 successive calls max)
-3XKK                    skip next instruction if VX == KK
-4XKK                    skip next instruction if VX != KK
-5XY0                    skip next instruction if VX == VY
-6XKK                    VX = KK
-7XKK                    VX = VX + KK
-8XY0                    VX = VY
-8XY1                    VX = VX OR VY
-8XY2                    VX = VX AND VY
-8XY3                    VX = VX XOR VY
-8XY4                    VX = VX + VY, VF = carry
-8XY5                    VX = VX - VY, VF = not borrow
-8XY6                    VX = VX SHR 1 (VX = VX/2), VF = carry
-8XY7                    VX = VY - VX, VF = not borrow
-8XYE                    VX = VX SHL 1(VX = VX*2), VF = carry
-9XY0                    skip next instruction if VX != VY
-ANNN                    I = NNN
-BNNN                    jump to NNN + V0
-CXKK                    VX = Random number AND KK
-DXYN                    draws a sprite at (VX, VY) starting at M(I). VF = collision.
-                        if N = 0, draws the 16x16 sprite, else an 8 x N sprite.
-EX9E                    skip next instruction if key VX pressed
-EXA1                    skip next instruction if key VX not pressed
-FX07                    VX = Delay timer
-FX0A                    waits a keypress and stores it in VX
-FX15                    delay timer = VX
-FX18                    sound timer = VX
-FX1E                    I = I + VX
-FX29                    I points to the 4 x 5 font sprite of hex char in VX
-FX33                    store BCD representation of VX in M(I)...M(I+2)
-FX55                    save V0...VX in memory starting at M(I)
-FX65                    load V0..VX(X<8) in the HP48 flags
-FX75                    save V0...VX(X<8) in the HP48 flags
-FX85                    load V0...VX(X<8) from the HP48 flags
-
-
-
-
-
-
-
-
-Ref.: Chip-8 Classic Manual. Revision 1.3 9th March 2019, www.chip-8.com
-Opcode Table
-store Code      Mnemonic    Description
-0000            NOP         No Operation
-00E0            ERASE       Clear Screen
-00EE            RETURN      Return from subroutine
-1MMM            GOTO MMM    jump to location MMM         
-2MMM            DO MMM      Call Subroutine
-3XKK            SKF VX=KK   Skip next Instruction if VX=KK
-4XKK            SKF VX!=KK  Skip next Instruction if VX!=KK.
-5XY0            SKF VX=VY   Skip next Instruction if VX=VY.
-6XKK            VX=KK       Assign Hex Value KK to Register VX.
-7XKK            VX=VX+KK    Add KK to VX.
-8XY0            VX=VY       Copy VY to VX.
-8XY1            VX=VX|VY    Logical OR VX with VY.
-8XY2            VX=VX.VY    Logical AND VX with VY.
-8XY3            VX=VX XOR VY    Logical XOR VX with VY.
-8XY4            VX=VX+VY        Add VY to VX. If result > FF, then VF = 1.
-8XY5            VX=VX-VY        Substract VY. If VX<VY, then VF = 0.
-9XY0            SKF VX≠VY       Skip next Instruction if VX ≠VY.
-AMMM            I=MMM           Set memory Index Pointer to MMM.
-BMMM            GOTO MMM+V0     Jump to location MMM + V0.
-CXKK            VX=RND.KK       Get random byte, then AND with KK.
-DXYN            SHOW N@VX,VY    Display N-byte pattern at (VX, VY).
-EX9E            SKF VX=KEY      Skip if key down =VX. No wait.
-EXA1            SKF VX≠KEY      Skip if key down ≠VX. No wait.
-F000            STOP            Jump to Monitor (CHIPOS).
-FX07            VX=TIME         Get current timer value.
-FX0A            VX=KEY          Input Hex key code. Wait for key down.
-FX15            TIME=VX         Initialize Timer. 01=20mS.
-FX17            PITCH=VX        Set the Pitch of the Tone Generator to VX.
-FX18            TONE=VX         Sound Tone for 20 timesVX milliseconds.
-FX1E            I=I+VX          Add VX to Memory Pointer.
-FX29            I=DSP,VX        Set Pointer to show VX(LS digit).
-FX33            MI=DEQ,VX       Store 3 digit decimal equivalent of VX
-FX55            MI=VO:VX        Store V0 through VX at I. I=I+X+1.
-FX65            V0:VX=MI        Load V0 through VX at I. I=I+X+1.
-FX70            RS485=VX        Send data in VX to RS485 Port.
-FX71            VX=RS485        Waits for received RS485 data. Place in VX.
-FX72            BAUD=VX         Set RS485 Baud rate.
-
-
-BAUD RATES
-
-PITCH VALUES
-
-MEMORY MAP
-
-
-
-
-
 RCA 1802
     COSMAC 8-bit microprocessor family
     first CMOS microprocessor
@@ -286,68 +34,305 @@ ETI-660
 
 
 
-MODERN CHIP-8 BOARD
-    Flash based Interpreter resident within boards Operating System
-    32 bit microcontroller 48 MHz
-    64x32 pixel monochrome Composite Video Display
-    Sound Generator - 30 Tones
-    RS485 Serial Port
-    Hexadecimal Keypad Interface
-    EEPROM Option board - CHIP-8 supported Load and Save Functions.
-    Single 5 VDC Supply, using a 2.1x5.5 DC plug
-    Small 120x90mm PCA footprint
+ 
 
-    37 instructions
-    including 3 new instructions to support RS485 Communications
+
+
+RCA Labs (1972) low cost microcomputers mid-1970
+    COSMAC VIP
+        8-bit 1802 processor 
+        1.76 Mhz
         
-    Modern implementations
-        interpreter running natively outside the 4K memory space
-        no need to avoid the low 512 bytes of memory and it is common to store font date
-        in there,
-    
+    TELMAC 1800
+        8 bit 
 
 
 
 
-    MODES OF OPERATION
-        COMMAND MODE
+
+
+CHIP-8
+    INTERPRETER 
+        low level pseudo instructions, language interpreted programming language
+        developed by Joseph Weisbecker
+        video games without asssembly
+
+    INTERPRETER EXTENTIONS AND VARIATIONS
+        CHIP-10
+        Hi Res CHIP-8
+        CHIP-8C
+        CHIP-8X
+        CHIP-48
+            HP-48 graphic calculators 1980
+
+        SCHIP, Super-Chip
+            several additiona opcodes
+
+
+
+
+
+
+VIRTUAL MACHINE (VM)
+        virtualization/emulation of a computer system,
+        provider of the functionality of a physical computer
         
-            power first applied, start off in command mode
-            random data display
-            white status bar bottom
-                hexadecimal number 4457, normal default value prior to the address being changed
-                    show current memory address being pointed to by CHIP-8 program
-                    value range from 0000 to FFFF Hex
+
+    REGISTERS
+        V0 - VF         16 x 1 byte
+
+    PROGRAM COUNTER (PC)
+        12 bit memory pointer
+        12 bit Address directioning
+        2^{12} = 1024    4096 bits ~ 4kB
     
-                command mode to use the function keys
-                F2 key resets monitor. board red LED will light.
-                program data i not lost
-    
-    
-        EDIT MODE
+    Memory Pointer???
+       load/store instructions and data
+       This allows multiple sets of variables or array processing.
+       Subroutine nesting is implemented to 32 levels
+            
+
+    MEMORY MAP
+        4K 4096 bytes (0x1000)
+        1 Byte Memory
         
-            when in edit mode a two digit hexadecimal number is displayed to the right
-            of the memoery address. this value represent the data being pointed to by the
-            program counter
+        
+        Address Range (Hex)              Function
+            0x000 - 0x03F                 Stack
+            0x040 - 0x04C                 Scratchpad
+            0x04D - 0x0FF                 Unused
+            0x100 - 0x1FF                 Display
+            0x200 - 0xFFF                 Program Area
+        
+        Scratchpad Area:
+            0040 - Firmware Revision (2 byte).
+            0048 - EEPROM Unique ID (8 bytes).
+        
+        
+        0x000 - 0x200
+            512 bytes of memory space (interpreter)
+
+        0x200
+            programs start at memory location 512(0x200)
+            programs do not access any of the memory below location 512 (0x200)
+        
+        0xEA0-0xEFF
+            and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
+            internal use and variables
+        
+        0xF00-0xFFF    
+     
+            the upper most byte 256 byte (0xF00-0xFFF) are reserved 
+            for display refresh, buffer to avoid flickering
+
+    TIMERS
+        two timers counting down from 60Hz to 0
+        Delay Timers
+        Sound Timers
     
+    INPUT
+        Keyboard
     
+    DISPLAY (GRAPHICS)
+        Standard Resolution 64x32, monochrome
+        64x32 sprites
+
     
-            F2 key allows the monitor to break out and go back to command mode
-            Pressing F1 key followed by the 0 key will place the monitor into edit mode.
-            It is this mode that allows a program to be stored in memory.
-            Pressing the F1 key when in edit mode will increment the address of the program.
-    
-            ...
-                
-        PROGRAM MODE
+    SOUND
+        Sound Generator pith changes
+        one fixed tone
+
+    STORAGE
+        cassette recorder
 
 
 
-GITHUB
-    Tobias V. Langhoff      awesome chip-8
 
-QEMU
+
+        
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+CHIP-8 INSTRUCTION SET
+Ref.: CHIP8. A CHIP-8 / SCHIP emulator version 2.2.0 by David WINTER (HPMANIAC)
+
+KK          1 byte constant
+X, Y        ½ byte constants
+NNN         1½ bytes (12 bits) address
+
+2 bytes / Opcode instructions
+
+Opcode      Mnemonic    Description
+1) 0NNN                    call processor 1802 machine code program at NNN (not implemented)
+
+2) 00E0                    erase the screen
+3) 00EE                    return from a CHIP-8 subroutine
+
+4) 1NNN                    jump to NNN
+4) 2NNN                    call CHIP-8 sub-routine at NNN (16 successive calls max)
+4) 3XKK                    skip next instruction if VX == KK
+4) 4XKK                    skip next instruction if VX != KK
+4) 5XY0                    skip next instruction if VX == VY
+4) 6XKK                    VX = KK
+4) 7XKK                    VX = VX + KK
+4) 8XY0                    VX = VY
+4) 8XY1                    VX = VX OR VY
+4) 8XY2                    VX = VX AND VY
+4) 8XY3                    VX = VX XOR VY *
+4) 8XY4                    VX = VX + VY, VF = carry
+4) 8XY5                    VX = VX - VY, VF = not borrow **
+4) 8XY6                    VX = VX SHR 1 (VX = VX/2), VF = carry
+4) 8XY7                    VX = VY - VX, VF = not borrow *, **
+4) 8XYE                    VX = VX SHL 1(VX = VX*2), VF = carry
+4) 9XY0                    skip next instruction if VX != VY
+4) ANNN                    I = NNN
+4) BNNN                    jump to NNN + V0
+4) CXKK                    VX = Random number AND KK
+4) DXYN                    draws a sprite at (VX, VY) starting at M(I). VF = collision.
+                        if N = 0, draws the 16x16 sprite, else an 8 x N sprite.
+5) EX9E                    skip next instruction if key VX pressed
+5) EXA1                    skip next instruction if key VX not pressed
+5) FX07                    VX = Delay timer
+5) FX0A                    waits a keypress and stores it in VX
+5) FX15                    delay timer = VX
+5) FX18                    sound timer = VX
+5) FX1E                    I = I + VX
+5) FX29                    I points to the 4 x 5 font sprite of hex char in VX
+5) FX33                    store BCD representation of VX in M(I)...M(I+2)
+5) FX55                    save V0...VX in memory starting at M(I)
+5) FX65                    load V0..VX(X<8) in the HP48 flags
+
+*   undocumented but functional in original docs
+**  when you do VX - VY, VF is set to the negation of the borrow. This
+    means that if VX is superior or equal to VY, VF will be set to 01, as the
+    borrow is 0. if VX is inferior to VY, VF is set to 00, as the borrow is 1.
+
+
+
+
+
+*** SCHIP Instruction
+    can be used in CHIP8 graphic mode
+
+7) 00CN                    scroll down N lines ***
+7) 00FB                    scroll 4 pixels right ***
+7) 00FC                    scroll 4 pixels left ***
+7) 00FD                    quit the emulator ***
+7) 00FE                    set CHIP-8 graphic mode ***
+7) 00FF                    set SCHIP graphic mode ***
+7) 
+7) FX75                    save V0...VX(X<8) in the HP48 flags  ***
+7) FX85                    load V0...VX(X<8) from the HP48 flags ***
+    
+
+
+
+
+
+
+Ref.: Chip-8 Classic Manual. Revision 1.3 9th March 2019, www.chip-8.com
+Opcode Table
+store Code      Mnemonic    Description
+0000            NOP         No Operation
+00E0            ERASE       Clear Screen
+00EE            RETURN      Return from subroutine
+1MMM            GOTO MMM    jump to location MMM         
+2MMM            DO MMM      Call Subroutine
+3XKK            SKF VX=KK   Skip next Instruction if VX=KK
+4XKK            SKF VX!=KK  Skip next Instruction if VX!=KK.
+5XY0            SKF VX=VY   Skip next Instruction if VX=VY.
+6XKK            VX=KK       Assign Hex Value KK to Register VX.
+7XKK            VX=VX+KK    Add KK to VX.
+8XY0            VX=VY       Copy VY to VX.
+8XY1            VX=VX|VY    Logical OR VX with VY.
+8XY2            VX=VX.VY    Logical AND VX with VY.
+8XY3            VX=VX XOR VY    Logical XOR VX with VY.
+8XY4            VX=VX+VY        Add VY to VX. If result > FF, then VF = 1.
+8XY5            VX=VX-VY        Substract VY. If VX<VY, then VF = 0.
+9XY0            SKF VX≠VY       Skip next Instruction if VX ≠VY.
+
+AMMM            I=MMM           Set memory Index Pointer to MMM.
+BMMM            GOTO MMM+V0     Jump to location MMM + V0.
+CXKK            VX=RND.KK       Get random byte, then AND with KK.
+DXYN            SHOW N@VX,VY    Display N-byte pattern at (VX, VY).
+EX9E            SKF VX=KEY      Skip if key down =VX. No wait.
+EXA1            SKF VX≠KEY      Skip if key down ≠VX. No wait.
+F000            STOP            Jump to Monitor (CHIPOS).
+FX07            VX=TIME         Get current timer value.
+FX0A            VX=KEY          Input Hex key code. Wait for key down.
+FX15            TIME=VX         Initialize Timer. 01=20mS.
+FX17            PITCH=VX        Set the Pitch of the Tone Generator to VX.
+FX18            TONE=VX         Sound Tone for 20 timesVX milliseconds.
+
+FX1E            I=I+VX          Add VX to Memory Pointer.
+FX29            I=DSP,VX        Set Pointer to show VX(LS digit).
+FX33            MI=DEQ,VX       Store 3 digit decimal equivalent of VX
+FX55            MI=VO:VX        Store V0 through VX at I. I=I+X+1.
+FX65            V0:VX=MI        Load V0 through VX at I. I=I+X+1.
+
+FX70            RS485=VX        Send data in VX to RS485 Port.
+FX71            VX=RS485        Waits for received RS485 data. Place in VX.
+FX72            BAUD=VX         Set RS485 Baud rate.
+
+
+BAUD RATES
+
+PITCH VALUES
+
+MEMORY MAP
+
+
+Ref: https://en.wikipedia.org/wiki/In-system_programming
+ISP
+    IN-SYSTEM PROGRAMMING (ISP)
+    or also called in-circuit serial programming (ICSP) is the hability of some
+    programmable logic devises, microcontrollers, and other embedded devices to be
+    programmed while installed in a complete system, rather than requiring the chip
+    to be programmed prior to installation in the system.
+
+
+IPS     
+        image signal processor
+        is a type of media processor or specialized digital signal processor (DSP)
+        used for imaging processing, in digital camaras and other devices -displays.
+
+IPU     
+        image processor unit, or
+
+
+EEPROM
+    electrically erasable programmable read-only memory and is a type of
+    non-volatile memory used in computers, integrated in microcontrollers
+    for smart cards and rmote keyless systems to store relative small amount of
+    data.
+    
+
+
+
+
+
+
+
+
 
 REFERENCE
 http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 https://multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+github:    Tobias V. Langhoff      awesome chip-8
+
+QEMU
+
+
