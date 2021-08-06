@@ -1,0 +1,419 @@
+CHIP-8
+
+A) PROCESSORS
+   CDP1802 
+       8-bit 
+       processor family
+
+B) MICROCOMPUTERS
+    A) RCA Labs (mid-1972) low cost microcomputers
+        COSMAC VIP
+            8-bit 1802 processor family
+            1.76 Mhz
+            first CMOS microprocessor
+            
+            v.1
+            two-chip
+                CDP1801R
+                CDP1801U
+    
+            v.2
+            sigle-chip
+                CDP1802
+            
+        TELMAC 1800
+            8 bit 
+    
+    B) Motorola 6800
+    
+    C) DREAM 6800
+    
+    D) ETI-660
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHIP-8 INTERPRETER 
+    low level pseudo instructions, language interpreted programming language
+    developed by Joseph Weisbecker
+
+    INTERPRETER EXTENTIONS AND VARIATIONS
+    CHIP-10
+    Hi Res CHIP-8
+    CHIP-8C
+    CHIP-8X
+    CHIP-48
+        HP-48 graphic calculators 1980
+
+    SCHIP, Super-Chip
+        several additiona opcodes
+    
+
+
+VIRTUAL MACHINE (VM)
+    virtualización o emulación of a computer system
+    provider of the functionality of a physical computer
+        
+    CPU-UP
+        REGISTERS
+            load/store instructions and data
+            V0 - VF         16 registers x 1 byte
+
+        ARITHMETIC-LOGIC BLOCKS-OPERATORS
+            artihmetic
+            logic
+            comparational
+            bitwise
+
+    CPU-UC
+        PROGRAM COUNTER (PC)
+            12 bit Address directioning 1½ bytes
+        
+            2^{12} = 4096   instruction/memory addresses ? 0x000000 - 0xFFFFFF
+        
+            4096 bytes ~ 4kB
+        
+        MEMORY POINTER
+           12 bit memory pointer  1½ bytes
+        
+           This allows multiple sets of variables or array processing.
+           Subroutine nesting is implemented to 32 levels
+        
+
+MEMORY MAP
+    4K 4096 bytes (0x1000)
+    1 Byte Memory
+    
+    
+    Address Range (Hex)              Function
+        0x000 - 0x03F                 Stack
+        0x040 - 0x04C                 Scratchpad
+        0x04D - 0x0FF                 Unused
+        0x100 - 0x1FF                 Display
+        0x200 - 0xFFF                 Program Area
+    
+    Scratchpad Area:
+        0040 - Firmware Revision (2 byte).
+        0048 - EEPROM Unique ID (8 bytes).
+    
+    
+    0x000 - 0x200
+        512 bytes of memory space (interpreter)
+
+    0x200
+        programs start at memory location 512(0x200)
+        programs do not access any of the memory below location 512 (0x200)
+    
+    0xEA0-0xEFF
+        and the 96 bytes below that (0xEA0-0xEff) were reserved for call stack,
+        internal use and variables
+    
+    0xF00-0xFFF    
+ 
+        the upper most byte 256 byte (0xF00-0xFFF) are reserved 
+        for display refresh, buffer to avoid flickering
+
+I/O SUBSYSTEM
+
+    INPUT
+        Keyboard
+
+    OUTPUT
+        DISPLAY (GRAPHICS)
+            Standard Resolution 64x32, monochrome
+            64x32 sprites
+
+        
+        SOUND
+            Sound Generator pith changes
+            one fixed tone
+
+        STORAGE
+            cassette recorder
+
+
+CLOCK/TIMERS
+    two timers counting down from 60Hz to 0
+    Delay Timers
+    Sound Timers
+    
+
+
+
+
+
+
+
+
+CHIP-8 INSTRUCTION SET
+Ref.: winter
+
+    Format
+        2 bytes / Opcode instructions
+            KK          1 byte constant
+            X,Y        ½ byte constants
+            NNN         1½ bytes (12 bits) address
+
+
+Format A            opcode
+00E0                0000    0000 1100 0000
+00EE                0000    0000 1110 1110
+
+Format B
+0NNN                0000    NNNN NNNN NNNN
+1NNN                0001    NNNN NNNN NNNN
+2NNN                0010    NNNN NNNN NNNN
+
+ANNN                1010    NNNN NNNN NNNN
+BNNN                1011    NNNN NNNN NNNN
+
+Format C
+3XKK                0011    XXXX KKKK KKKK
+4XKK                0100    XXXX KKKK KKKK
+5XY0                0101    XXXX YYYY 0000
+6XKK                0110    XXXX KKKK KKKK
+7XKK                0111    XXXX KKKK KKKK
+
+Format D
+8XY0                1000    XXXX YYYY 0000
+8XY1                1000    XXXX YYYY 0001
+8XY2                1000    XXXX YYYY 0010
+8XY3                1000    XXXX YYYY 0011
+8XY4                1000    XXXX YYYY 0100
+8XY5                1000    XXXX YYYY 0101
+8XY6                1000    XXXX YYYY 0110
+8XY7                1000    XXXX YYYY 0111
+
+8XYE                1000    XXXX YYYY 1110
+
+9XY0                1001    XXXX YYYY 0000
+
+
+CXKK                1100    XXXX KKKK KKKK
+
+DXYN                1101    XXXX YYYY nnnn
+EX9E                1110    XXXX 1001 1110
+EXA1
+FX07
+FX0A
+FX15
+FX18
+FX1E
+FX1E
+FX29
+FX33
+FX55
+FX65
+
+OPCODE      MNEMONIC    DESCRIPTION
+1) 0NNN     SYS addr               call processor 1802 machine code program at NNN (not implemented)
+
+2)  00E0     CLS                     erase the screen
+3)  00EE     RET                     return from a CHIP-8 subroutine
+
+4)  1NNN     JP  addr                jump to NNN
+5)  2NNN     CALL addr               call CHIP-8 sub-routine at NNN (16 successive calls max)
+6)  3XKK     SE  VX, byte            skip next instruction if VX == KK
+7)  4XKK     SNE VX, byte            skip next instruction if VX != KK
+8)  5XY0     SE  VX, Vy              skip next instruction if VX == VY
+
+9)  6XKK     LD  VX, byte            VX = KK  Assign Hex Value KK to Register VX.
+10) 7XKK    ADD VX, byte            VX = VX + KK
+
+11) 8XY0    LD VX, VY               VX = VY
+12) 8XY1    OR  VX, VY              VX = VX OR VY
+13) 8XY2    AND VX, VY              VX = VX AND VY
+14) 8XY3    XOR VX, VY              VX = VX XOR VY *
+15) 8XY4    ADD VX, VY              VX = VX + VY, VF = carry
+16) 8XY5    SUB VX, VY              VX = VX - VY, VF = not borrow **
+17) 8XY6    SHR VX, {,VY}           VX = VX SHR 1 (VX = VX/2), VF = carry
+18) 8XY7    SUBN VX, VY             VX = VY - VX, VF = not borrow *, **
+19) 8XYE    SHL VX {, VY}           VX = VX SHL 1(VX = VX*2), VF = carry
+20) 9XY0    SNE VX, VY              skip next instruction if VX != VY
+
+21) ANNN    LD I, addr              I = NNN Set memory Index Pointer to MMM.
+
+22) BNNN    JP V0, addr             jump to NNN + V0
+23) CXKK    RND VX, byte            VX = Random number AND KK
+24) DXYN    DRW VX, VY, nibble      draws a sprite at (VX, VY) starting at M(I). VF = collision.
+                                    if N = 0, draws the 16x16 sprite, else an 8 x N sprite.
+
+25) EX9E    SKP VX                  skip next instruction if key VX pressed
+                                    Skip if key down =VX. No wait.
+26) EXA1    SKNP VX                 skip next instruction if key VX not pressed
+                                    Skip if key down ≠VX. No wait.
+
+27) FX07    LD VX, DT               VX = Delay timer
+                                    Get current timer value.
+28) FX0A    LD VX, K                waits a keypress and stores it in VX
+                                    Input Hex key code. Wait for key down.
+29) FX15    LD DT, VX               delay timer = VX
+                                    Initialize Timer. 01=20mS.
+30) FX18    LD ST, VX               sound timer = VX
+                                    Sound Tone for 20 timesVX milliseconds.
+31) FX1E    ADD I, VX               I = I + VX
+32) FX29    LD  F, VX               I points to the 4 x 5 font sprite of hex char in VX
+33) FX33    LD  B, VX               store BCD representation of VX in M(I)...M(I+2)
+                                    Store 3 digit decimal equivalent of VX
+34) FX55    LD  [I], VX             save V0...VX in memory starting at M(I)
+                                    Store V0 through VX at I. I=I+X+1.
+35) FX65    LD VX, [I]              load V0..VX(X<8) in the HP48 flags
+                                    Load V0 through VX at I. I=I+X+1.
+
+*   undocumented but functional in original docs
+**  when you do VX - VY, VF is set to the negation of the borrow. 
+    This means that if VX is superior or equal to VY, 
+    VF will be set to 01, as the borrow is 0. if VX is inferior to VY, 
+    VF is set to 00, as the borrow is 1.
+
+
+
+
+
+*** SCHIP Instruction
+    can be used in CHIP8 graphic mode
+
+36) 00CN    SCD nibble              scroll down N lines ***
+37) 00FB    SCR                     scroll 4 pixels right ***
+38) 00FC    SCL                     scroll 4 pixels left ***
+39) 00FD    EXIT                    quit the emulator ***
+40) 00FE    LOW                     set CHIP-8 graphic mode ***
+41) 00FF    HIGH                    set SCHIP graphic mode ***
+42) DXY0    DRW VX, VY, 0
+43) FX30    LD  HF, VX
+44) FX75    LD  R, VX               save V0...VX(X<8) in the HP48 flags  ***
+45) FX85    LD  VX, R               load V0...VX(X<8) from the HP48 flags ***
+    
+
+
+
+
+
+
+Ref.: march2019
+Opcode Table
+store Code      Mnemonic        Description
+0000            NOP             No Operation
+9XY0            SKF VX≠VY       Skip next Instruction if VX ≠VY.
+
+F000            STOP            Jump to Monitor (CHIPOS).
+FX17            PITCH=VX        Set the Pitch of the Tone Generator to VX.
+
+FX70            RS485=VX        Send data in VX to RS485 Port.
+FX71            VX=RS485        Waits for received RS485 data. Place in VX.
+FX72            BAUD=VX         Set RS485 Baud rate.
+
+
+BAUD RATES
+
+PITCH VALUES
+
+MEMORY MAP
+
+
+Ref: https://en.wikipedia.org/wiki/In-system_programming
+ISP
+    IN-SYSTEM PROGRAMMING (ISP)
+    or also called in-circuit serial programming (ICSP) is the hability of some
+    programmable logic devises, microcontrollers, and other embedded devices to be
+    programmed while installed in a complete system, rather than requiring the chip
+    to be programmed prior to installation in the system.
+
+
+IPS     
+        image signal processor
+        is a type of media processor or specialized digital signal processor (DSP)
+        used for imaging processing, in digital camaras and other devices -displays.
+
+IPU     
+        image processor unit, or
+
+
+EEPROM
+    electrically erasable programmable read-only memory and is a type of
+    non-volatile memory used in computers, integrated in microcontrollers
+    for smart cards and rmote keyless systems to store relative small amount of
+    data.
+    
+
++--------------------------------------------------------------+
++--------------------------------------------------------------+
+
+APPLICATIONS
+    ported videogames
+    graphing calculators
+    pure hardware implementations (written in Verilog) for FPGA boards
+
+    comercial proporses
+    video games without asssembly
+
+
+
+ 
+
+
+
+        
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+
+APLICATIONS
+    scientific instruments
+    comertial products
+    space science programs
+    Hubble Space Telescope
+
+SIMULATIONS and EMULATIONS
+    emulated and simulated in hardware and software by hobbyists
+    VHDL for an FPGA
+    
+
+
+
+
+AIMS
+    mnemotecniques
+    binary chip-8 ensambled bytecode
+
+
+
+
+
+
+
+
+REFERENCE
+http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+https://multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+github:    Tobias V. Langhoff      awesome chip-8
+
+Ref.: winter
+    A CHIP-8 / SCHIP emulator version 2.2.0 by David WINTER (HPMANIAC)
+
+Ref.: march2019
+    Chip-8 Classic Manual. Revision 1.3 9th March 2019, www.chip-8.com
+
+QEMU
+
+
