@@ -416,4 +416,10 @@ Ref.: march2019
 
 QEMU
 
+RESOURCES
+    Github
+        chip8 Archives
+        chip-8_documentation
+            https://github.com/trapexit/chip-8_documentation
 
+        CHIP-8-Emulation
